@@ -1,0 +1,2 @@
+class ArtistiController < ApplicationController
+end

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  individual: one
+  group: one
+  creation: 2017-04-08
+  disbanding: 2017-04-08
+
+two:
+  individual: two
+  group: two
+  creation: 2017-04-08
+  disbanding: 2017-04-08

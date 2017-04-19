@@ -1,0 +1,97 @@
+<%= render 'errors' %>
+<p>
+  <strong>Name:</strong>
+  <%= @artist.name %>
+
+</p>
+ 
+<p>
+  <strong>Bio:</strong>
+  <%= @artist.bio %>
+
+</p>
+
+<p>
+ 
+  <% if @artist.isgroup %>
+    <h2>
+      Group of artists
+    </h2>
+    <h6>
+      A group should have at least one member
+    </h6>
+      <h2>Members of the group</h2>
+      <table>
+        <tr>
+        <th>Name</th>
+        <th>Joining date</th>
+        <th>Leaving date</th>
+        <th colspan="1"></th>
+      </tr>
+      <% @artist.bands.each do |band| %>
+        <tr>
+        <td><%= band.individual.name %></td>
+        <td><%= band.creation %></td>
+        <td><%= band.disbanding %></td>
+        <td><%= link_to 'Edit', edit_artist_path(band.individual) %></td>
+      </tr>  
+      <% end %>
+      </table>
+
+
+
+      <%# @group = @artist %>  
+
+      <h2> Add a member to the group:   </h2>
+
+      <%= form_for([@artist, @artist.bands.build]) do |ff| %>
+        <p>
+          <%= ff.select :individual_id, Artist.where(:isgroup=>false).collect{ |p| [p.name, p.id] } %><br>
+        </p>
+        <p>
+          <h5> Joining date </h5>
+          <%= ff.date_field :creation %>
+        </p>
+        <p>
+          <h5> Leaving date </h5>
+          <%= ff.date_field :disbanding %>
+        </p>
+
+ 
+
+        <p>
+        <%= ff.submit %>
+        </p>
+
+     <% end %>	
+
+  <% else %>   
+    <h2>
+      Single artist
+    </h2>
+    <% if false %>
+       <table>
+        <tr>
+        <th>Name</th>
+        <th>Joining date</th>
+        <th>Leaving date</th>
+        <th colspan="1"></th>
+      </tr>
+      <% @artist.bands.each do |band| %>
+        <tr>
+        <td><%= band.group.name %></td>
+        <td><%= band.creation %></td>
+        <td><%= band.disbanding %></td>
+        <td><%= link_to 'Edit', edit_artist_path(band.individual) %></td>
+      </tr>  
+      <% end %>
+      </table>      
+    <% end %>  
+  <% end %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_artist_path(@artist) %> |
+<%= link_to 'Add another artist', new_artist_path %> |
+<%= link_to 'Back', artists_path %>

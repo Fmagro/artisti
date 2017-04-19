@@ -1,0 +1,65 @@
+<%= form_for @artist do |f| %>
+ 
+  <% if @artist.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@artist.errors.count, "error") %> prohibited
+        this artist from being saved:
+      </h2>
+      <ul>
+        <% @artist.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ 
+  <p>
+    <%= f.label :Name %><br>
+    <%= f.text_field :name %>
+  </p>
+ 
+  <p>
+    <%= f.label :bio %><br>
+    <%= f.text_area :bio, size: "30x10" %>
+  </p>
+
+  <p>
+
+    <%= f.radio_button(:isgroup, false)  %>
+    <%= label_tag( "Single artist") %>
+    <%= f.radio_button(:isgroup, true) %>
+    <%= label_tag( "A group of artists") %>
+  </p>
+
+    <% if :isgroup %>
+      <h2>Members of the group</h2>
+      <table>
+        <tr>
+        <th>Name</th>
+        <th>Joining date</th>
+        <th>Leaving date</th>
+        <th colspan="1"></th>
+      </tr>
+      <% @artist.bands.each do |band| %>
+        <tr>
+        <td><%= band.individual.name %></td>
+        <td><%= band.creation %></td>
+        <td><%= band.disbanding %></td>
+        <td><%= link_to 'Edit', edit_artist_path(band.individual) %></td>
+      </tr>  
+      <% end %>
+      </table>
+      <h2> Add a member to the group:   </h2>
+
+      <%= f.fields_for([@artist, @artist.bands.build]) do |ff| %>
+        <p>
+          <%= ff.select :artist_id, Artist.find.where(:isgroup=>false){ |p| [p.name, p.id] } %><br>
+        </p>
+    <% end %>  
+
+  <p>
+    <%= f.submit %>
+  </p>
+
+<% end %>
